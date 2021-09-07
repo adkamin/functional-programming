@@ -31,3 +31,26 @@ say 60 = "sixty"
 say 70 = "seventy"
 say 80 = "eighty"
 say 90 = "ninety"
+
+say n  = removeSpace (sayThousands n)
+
+sayDigit n               
+    | n > 0     = say n
+    | otherwise = ""
+
+sayTens n    
+    | n < 10    = sayDigit (n `mod` 10)
+    | n < 20    = say n        
+    | otherwise = say (n `mod` 100 - (n `mod` 10)) ++ " " ++ sayDigit (n `mod` 10)
+
+sayHundreds n 
+    | n < 100   = sayTens (n `mod` 100)
+    | otherwise = say ((n `mod` 1000) `div` 100) ++ " hundred " ++ sayTens (n `mod` 100)
+
+sayThousands n  
+    | n < 1000  = sayHundreds (n `mod` 1000)
+    | otherwise = say (n `div` 1000) ++ " thousand " ++ sayHundreds (n `mod` 1000)
+
+removeSpace s
+    | last s == ' ' = take ((length s) - 1) s
+    | otherwise     = s
