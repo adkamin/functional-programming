@@ -64,7 +64,8 @@ e5 = "1111 + 2222" == "1111" ++ " + " ++ "2222"
   10
 -}
 
---Exercise 1.7
+-- Exercise 1.7
+-- Part 1
 triangle :: Integer -> String
 triangle n = drawTriangle (fromIntegral 1) (fromIntegral (n-1)) 
 
@@ -72,7 +73,17 @@ drawTriangle :: Int -> Int -> String
 drawTriangle st 0  = replicate st '*'
 drawTriangle st sp = replicate sp ' ' ++ replicate st '*' ++ "\n" ++ drawTriangle (st+2) (sp-1)
 
+-- Part 2
+drawTriangleShift :: Int -> Int -> Int -> String
+drawTriangleShift 0  st _ = drawTriangle st 0
+drawTriangleShift sh st 0  = replicate sh ' ' ++ replicate st '*'
+drawTriangleShift sh st sp = replicate sh ' ' ++ replicate sp ' ' ++ replicate st '*' ++ "\n" ++ drawTriangleShift sh (st+2) (sp-1)
+-- sh = shift, st = stars, sp = spaces
 
+christmasTree :: Integer -> String
+christmasTree n = drawChristmasTree (fromIntegral n) 0
 
-
-
+drawChristmasTree :: Int -> Int -> String
+drawChristmasTree 0  _ = ""
+drawChristmasTree sh ts = drawTriangleShift sh 1 ts ++ "\n" ++ drawChristmasTree (sh-1) (ts+1)
+-- ts = triangle size
