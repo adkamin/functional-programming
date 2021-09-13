@@ -37,4 +37,4 @@ getAvgAge :: [Person] -> Integer
 getAvgAge lst = (sum (map (\p -> age p) lst)) `div` toInteger (length lst)
 
 promoteFP :: [Person] -> [Person]
-promoteFP lst = map (\p -> p {name = "dr " ++ name p}) (filter (\p -> favouriteCourse p == "Functional Programming") lst)
+promoteFP lst = map (\p -> p {name = "dr. " ++ name p}) (filter (\p -> favouriteCourse p == "Functional Programming") lst)
