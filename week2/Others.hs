@@ -9,6 +9,5 @@ f7 f = 1
 f8 :: a -> (a -> a)
 f8 x = \y -> x
 
-{-
 f9 :: (a -> a) -> a
-f9 f = -}
+f9 f = let x = f x in x
