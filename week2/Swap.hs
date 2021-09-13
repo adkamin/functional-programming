@@ -1,7 +1,7 @@
 module Swap where
 
 -- 1
---swap :: (a, b) -> (b, a)
+--swap :: (Int, Int) -> (Int, Int)
 swap (x,y) = (y,x)
 
 --sumProduct :: (Int, Int) -> (Int, Int)
@@ -14,7 +14,7 @@ smallerFirst (x,y)
 
 -- 2
 {- 
-Works for swap, but not for the remaining functions as there the types are in the same order within the tuple.
+Works for swap, because that one is polymorphic - works for any type of pairs
 For sumProduct, we need Num a => (a, a) -> (a, a) to perform (+) and (*)
 For smallerFirst, we need Ord a => (a, a) -> (a, a) to perform (<) 
 -}
@@ -31,9 +31,8 @@ smallerFirst :: Ord b => (b, b) -> (b, b)
 
 -- 4
 {-
-(Int,(Char,Bool)) is a tuple containing another tuple as it's second element
-(Int,Char,Bool) is a 3-tuple
-
+(Int,(Char,Bool)) is a nested tuple (contains a tuple as it's second element)
+(Int,Char,Bool) is a triple
 -}
 
 convert :: (Int,(Char,Bool)) -> (Int,Char,Bool)
