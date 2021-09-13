@@ -10,4 +10,4 @@ f8 :: a -> (a -> a)
 f8 x = \y -> x
 
 f9 :: (a -> a) -> a
-f9 f = let x = f x in x
+f9 f = x where x = f x
