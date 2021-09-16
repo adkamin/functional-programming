@@ -17,8 +17,8 @@ shift n c = chr ((ord c - 64 + n) `mod` 26 + 64)
 
 caesar :: Int -> String -> String
 caesar n (s:sx)
-    | isAscii s && isLower s = shift n (toUpper s) : caesar n sx
-    | isAscii s && isUpper s = shift n s : caesar n sx
+    | isAsciiLower s = shift n (toUpper s) : caesar n sx
+    | isAsciiUpper s = shift n s : caesar n sx
     | otherwise              = s : caesar n sx
 caesar n []     = ""
 
