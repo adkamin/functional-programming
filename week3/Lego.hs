@@ -11,4 +11,7 @@ sortWithPos :: (Ord a) => [a] -> [(a,Int)]
 sortWithPos xs = sort [(x,i) | (x,i) <- zip xs [0..]]
 
 --sortedPos :: (Ord a) => [a] -> [(a,Int)]
-sortedPos xs = ((zip xs [0..]), (zip (sort xs) [0..]))
+sortedPos xs = [(s,i) | s <- xs, (x,i) <- l, x == s]
+    where l = (zip (sort xs) [0..])
+
+removeDups xs = map filter () xs
