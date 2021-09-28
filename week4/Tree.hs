@@ -1,6 +1,6 @@
 module Tree where
 
-import Data.List
+--import Data.List
 
 data Tree a = Leaf | Node a (Tree a) (Tree a)
   deriving Show
@@ -36,16 +36,39 @@ height (Node a l r) = 1 + max (height l) (height r)
 
 elems  :: Tree a -> [a]
 elems Leaf         = []
-elems (Node a l r) = a : elems l ++ elems r
+elems (Node a l r) = elems l ++ [a] ++ elems r
 
---isSearchTree :: (Ord a) => Tree a -> Bool
+isSearchTree :: (Ord a) => Tree a -> Bool
+isSearchTree Leaf = True
+isSearchTree t    = isSorted (elems t)
+
+isSorted :: (Ord a) => [a] -> Bool
+isSorted []       = True
+isSorted [x]      = True
+isSorted (x:y:ys) = x <= y && isSorted (y:ys)
 
 {----------- exercise 4.4 -------------}
 
---member :: (Ord a) => a -> Tree a -> Bool
---insert :: (Ord a) => a -> Tree a -> Tree a
+member :: (Ord a) => a -> Tree a -> Bool
+member el Leaf = False
+member el (Node a l r) 
+  | el == a = True
+  | el <  a = member el l
+  | el >  a = member el r
+
+insert :: (Ord a) => a -> Tree a -> Tree a
+insert el Leaf = (Node el Leaf Leaf)
+insert el (Node a l r) 
+  | el == a = (Node a l r)
+  | el <  a = (Node a (insert el l) r) 
+  | el >  a = (Node a l (insert el r))
+
+
 --delete :: (Ord a) => a -> Tree a -> Tree a
+
 --fromList :: (Ord a) => [a] -> Tree a
+
+
 
 {----------- exercise 4.5 -------------}
 
@@ -57,7 +80,6 @@ elems (Node a l r) = a : elems l ++ elems r
  - is prety simple, but it is a fiddly function to write if you want it to
  - produce an actually nice tree. -}
 
-{-
 layout :: (Show a) => Tree a -> String
 layout tree = go "" ("","","") tree ++ "\n"
   where 
@@ -79,4 +101,4 @@ layout tree = go "" ("","","") tree ++ "\n"
 
 putTree :: (Show a) => Tree a -> IO()
 putTree tree = putStr (layout tree)
--}
+
