@@ -78,8 +78,9 @@ findMin :: Tree a -> a
 findMin (Node a Leaf _) = a
 findMin (Node a l r)    = findMin l
 
---fromList :: (Ord a) => [a] -> Tree a
---fromList 
+-- fromList :: (Ord a) => [a] -> Tree a
+-- fromList [x]    = insert x Leaf
+-- fromList (x:xs) = insert x (fromList xs)
 
 --(insert "Marc" . insert "Twan" . insert "Sjaak") Leaf
 
@@ -87,8 +88,22 @@ findMin (Node a l r)    = findMin l
 
 {----------- exercise 4.5 -------------}
 
---inOrder :: Tree a -> [a]
---fromAscList :: [a] -> Tree a
+inOrder :: Tree a -> [a]
+inOrder Leaf = []
+inOrder (Node a l r) = inOrder l ++ [a] ++ inOrder r
+
+fromAscList :: [a] -> Tree a
+fromAscList l@(x:xs)
+  | length l == 1 = (Node x Leaf Leaf)
+  | length l == 2 = (Node x Leaf (Node (head xs) Leaf Leaf))
+  | otherwise     = (Node (l !! mid) (fromAscList (take mid l)) (fromAscList (drop (mid + 1) l)))
+                      where mid = (length l) `div` 2
+
+
+
+
+
+
 --breadthFirst :: Tree a -> [a]
 
 {- BONUS: a tree pretty printer; the recursive structure of this function
