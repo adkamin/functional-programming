@@ -1,7 +1,5 @@
 module Tree where
 
---import Data.List
-
 data Tree a = Leaf | Node a (Tree a) (Tree a)
   deriving Show
 
@@ -63,11 +61,24 @@ insert el (Node a l r)
   | el <  a = (Node a (insert el l) r) 
   | el >  a = (Node a l (insert el r))
 
+delete :: (Ord a) => a -> Tree a -> Tree a
+delete el (Node a l r) 
+  | el == a = removeElement el (Node a l r)
+  | el <  a = (Node a (delete el l) r) 
+  | el >  a = (Node a l (delete el r))
 
---delete :: (Ord a) => a -> Tree a -> Tree a
+removeElement :: (Ord a) => a -> Tree a -> Tree a
+removeElement el (Node a Leaf Leaf) = Leaf
+removeElement el (Node a Leaf r)    = r
+removeElement el (Node a l Leaf)    = l
+removeElement el (Node a l r)       = (Node (findMin r) l (delete (findMin r) r))
 
---fromList :: (Ord a) => [a] -> Tree a
+findMin :: Tree a -> a
+findMin (Node a Leaf _) = a
+findMin (Node a l r)    = findMin l
 
+
+-- fromList :: (Ord a) => [a] -> Tree a
 
 
 {----------- exercise 4.5 -------------}
