@@ -62,6 +62,7 @@ insert el (Node a l r)
   | el >  a = (Node a l (insert el r))
 
 delete :: (Ord a) => a -> Tree a -> Tree a
+delete el (Node a Leaf Leaf) = (Node a Leaf Leaf)   -- In case the element is not in the tree
 delete el (Node a l r) 
   | el == a = removeElement el (Node a l r)
   | el <  a = (Node a (delete el l) r) 
@@ -77,8 +78,11 @@ findMin :: Tree a -> a
 findMin (Node a Leaf _) = a
 findMin (Node a l r)    = findMin l
 
+--fromList :: (Ord a) => [a] -> Tree a
+--fromList 
 
--- fromList :: (Ord a) => [a] -> Tree a
+--(insert "Marc" . insert "Twan" . insert "Sjaak") Leaf
+
 
 
 {----------- exercise 4.5 -------------}
