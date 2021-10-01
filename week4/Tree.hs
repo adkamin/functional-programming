@@ -95,7 +95,14 @@ fromAscList l@(x:xs)
   | otherwise     = (Node (l !! mid) (fromAscList (take mid l)) (fromAscList (drop (mid + 1) l)))
                       where mid = (length l) `div` 2
 
---breadthFirst :: Tree a -> [a]
+breadthFirst :: Tree a -> [a]
+breadthFirst t = breadthList [t]
+
+breadthList :: [Tree a] -> [a]
+breadthList []                = []
+breadthList (Leaf:xs)         = breadthList xs
+breadthList ((Node a l r):xs) = a : breadthList (xs ++ [l,r])
+
 
 {- BONUS: a tree pretty printer; the recursive structure of this function
  - is prety simple, but it is a fiddly function to write if you want it to
