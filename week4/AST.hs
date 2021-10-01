@@ -11,9 +11,9 @@ data Expr =
     Expr :/: Expr 
 
 infixl 6 :+:
-infixl 7 :-:
-infixl 8 :*:
-infixl 9 :/:
+infixl 6 :-:
+infixl 7 :*:
+infixl 7 :/:
 
 eval :: (Fractional a, Eq a) => Expr -> a -> Maybe a
 eval (Lit i) _     = Just (fromIntegral i)

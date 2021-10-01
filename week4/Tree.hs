@@ -29,7 +29,7 @@ nodes  :: Tree a -> Int
 nodes t = (leaves t) - 1
 
 height :: Tree a -> Int
-height Leaf = 0
+height Leaf         = 0
 height (Node a l r) = 1 + max (height l) (height r)
 
 elems  :: Tree a -> [a]
