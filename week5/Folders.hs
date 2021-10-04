@@ -2,9 +2,11 @@ module Folders where
 
 import Prelude hiding (and,or,elem,maximum)
 
---and :: [Bool] -> Bool
+and :: [Bool] -> Bool
+and = foldr (&&) True
 
---or :: [Bool] -> Bool
+or :: [Bool] -> Bool
+or = foldr (||) False
 
 --elem :: (Eq a) => a -> [a] -> Bool
 
