@@ -3,7 +3,9 @@ module Unfold where
 import Data.List (unfoldr)
 import Prelude hiding (take,zip,(++))
 
--- bits :: Int -> [Int]
+bits :: Int -> [Int]
+bits n = unfoldr (,0)
+
 -- zip :: [a] -> [b] -> [(a,b)]
 -- take :: Int -> [a] -> [a]
 -- primes :: [Integer]
