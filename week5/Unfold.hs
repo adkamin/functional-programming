@@ -30,8 +30,7 @@ insert el l = apo (\(x, ys) -> if (length ys) == 0 then Left [x] else if x <= (h
 -- insert el l = apo (\(x, (y:ys)) -> if (length (y:ys)) == 0 then Left [x] else if x <= y then Left (x : y : ys) else Right (y, (x,ys)) ) (el,l) 
 
 unfoldrApo :: (t -> Maybe (a, t)) -> t -> [a]
--- unfoldrApo grow seed = apo (\g s -> ) grow seed
-
+unfoldrApo grow seed = apo (\g s -> if g s == (Just (?,?)) then (Right (?,?)) else (Left ?)) grow seed
 
 -- unfoldr :: (s -> Maybe (a,s)) -> s -> [a]
 -- unfoldr grow seed = case grow seed of
