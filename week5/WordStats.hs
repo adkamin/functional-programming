@@ -21,7 +21,9 @@ collapse [(a,b)]            = [(a,b)]
 collapse ((a,b):(c,d):rest) = collapse ((a,(b+d)):rest)
 -- collapse = foldr (\((a,b):(c,d):rest) -> ((a,(b+d)):rest)) []
 
---anagrams :: String -> ??
+--missess removing duplicates
+anagrams :: String -> [[String]]
+anagrams = filter (\l -> length l > 1) . groupBy (\t1 t2 -> length (union t1 t2) == length t1) . reverse . (sortBy (compare `on` length)) . words
 
 main :: IO ()
 main = onStdin $ wordFrequency  -- change this to run a different function
