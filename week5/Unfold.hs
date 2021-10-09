@@ -29,8 +29,8 @@ insert el l = apo (\(x, ys) -> if (length ys) == 0 then Left [x] else if x <= (h
 -- this one looks better and I thought it is the same but it throws exception non-exhaustive pattern when inserting largest element:
 -- insert el l = apo (\(x, (y:ys)) -> if (length (y:ys)) == 0 then Left [x] else if x <= y then Left (x : y : ys) else Right (y, (x,ys)) ) (el,l) 
 
-unfoldrApo :: (t -> Maybe (a, t)) -> t -> [a]
-unfoldrApo grow seed = apo (\g s -> if g s == (Just (?,?)) then (Right (?,?)) else (Left ?)) grow seed
+-- unfoldrApo :: (t -> Maybe (a, t)) -> t -> [a]
+-- unfoldrApo grow seed = apo (\g s -> if g s == (Just (?,?)) then (Right (?,?)) else (Left ?)) grow seed
 
 -- unfoldr :: (s -> Maybe (a,s)) -> s -> [a]
 -- unfoldr grow seed = case grow seed of

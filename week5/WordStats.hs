@@ -4,11 +4,22 @@ import Data.Function
 import qualified Data.Map as M
 
 wordFrequency :: String -> [(String,Int)]
-wordFrequency  = map (\x->(head x,length x)) . group . sort . words
+wordFrequency  = map (\x -> (head x, length x)) . group . sort . words
 
---mostFrequentOfLength :: Int -> String -> ??
+mostFrequencyOfLength :: Int -> String -> [(String, Int)]
+mostFrequencyOfLength n = reverse . (filter (\(s,i) -> length s >= n)) . wordFrequency 
 
---wordLengthFrequency :: String -> ??
+wordLengthFrequency :: String -> [[(Int, Int)]]
+wordLengthFrequency = sumLengths . groupLengths . getLengths
+  where 
+    sumLengths   = map collapse
+    groupLengths = groupBy (\t1 t2 -> fst t1 == fst t2) . sortOn fst
+    getLengths   = map (\(s,i) -> (length s, i)) . mostFrequencyOfLength 0 
+
+-- don't know yet how to do this with foldr or map or something similar
+collapse [(a,b)]            = [(a,b)]
+collapse ((a,b):(c,d):rest) = collapse ((a,(b+d)):rest)
+-- collapse = foldr (\((a,b):(c,d):rest) -> ((a,(b+d)):rest)) []
 
 --anagrams :: String -> ??
 
