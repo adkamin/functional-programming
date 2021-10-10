@@ -14,7 +14,7 @@ take n l = unfoldr (\(i,s) -> if (i /= 0 && length s /= 0) then Just (head s, ((
 
 -- How to make primes stop, instead of making the list have upper bound?
 primes :: [Integer]
-primes = unfoldr (\(s:sx) -> if (sx) /= [] then Just (s, (filter (\n -> n `mod` s /= 0) sx)) else Nothing) [2..100]
+primes = unfoldr (\(s:sx) -> if (sx) /= [] then Just (s, (filter (\n -> n `mod` s /= 0) sx)) else Nothing) [2..]
 
 apo :: (t -> Either [a] (a, t)) -> t -> [a]
 apo f seed = case f seed of
@@ -23,6 +23,9 @@ apo f seed = case f seed of
 
 (++) :: [a] -> [a] -> [a]
 (++) l1 l2 = apo (\(xs, ys) -> if length xs /= 0 then Right ((head xs), ((drop 1 xs), ys)) else Left ys) (l1, l2)
+
+[] ys = ys
+(x:xs) ys  x : xs ++ ys 
 
 insert :: (Ord a) => a -> [a] -> [a]
 insert el l = apo (\(x, ys) -> if (length ys) == 0 then Left [x] else if x <= (head ys) then Left (x : (head ys) : (drop 1 ys)) else Right ((head ys), (x,(drop 1 ys))) ) (el,l) 
