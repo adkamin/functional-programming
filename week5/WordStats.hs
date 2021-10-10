@@ -19,5 +19,5 @@ anagrams = filterAnagrams . groupByEqualEl
     groupByEqualEl = groupBy (\t1 t2 -> length (union t1 t2) == length t1) . reverse . (sortBy (compare `on` length)) . words
 
 main :: IO ()
-main = onStdin $ wordFrequency  -- change this to run a different function
+main = onStdin $ M.toList . \l -> M.fromListWith (+) (map (\s -> (s,1)) (words l))
   where onStdin f = getContents >>= mapM_ print . f . filter (\x->isAlphaNum x || isSpace x)
