@@ -6,3 +6,5 @@ import Data.Monoid
 --instance Semigroup ... where
 
 --instance Monoid ... where
+
+-- ||, &&, 

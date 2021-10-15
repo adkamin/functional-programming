@@ -10,21 +10,23 @@ module Monoids where
    mempty = False
 
    The function              mod :: (Integral a) => a -> a -> a
-   mempty = (\y -> y `mod` + 1)
+   mod is not associative
 
    The function              max :: (Ord a) => a -> a -> a
-   mempty = minBound (if a is also of class Bounded)
+   we cannot define minBound
 
    Function composition,     (.) :: (b -> c) -> (a -> b) -> (a -> c)
    mempty = id
 
    The function              zipWith (+) :: [Int] -> [Int] -> [Int]
-   mempty = (\l -> replicate 0 (length l))
+   mempty = [0..]
 
    The operator              (++/) :: [a] -> [a] -> [a] defined below
-   ?
+   not associative
   -}
 
 (++/) :: [a] -> [a] -> [a]
 []     ++/ ys = ys
 (x:xs) ++/ ys = x:(ys ++/ xs)
+
+x : (y : z) = (x : y) : z
