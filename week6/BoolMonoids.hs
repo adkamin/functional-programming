@@ -2,7 +2,7 @@ module Monoids where
 import Data.Monoid
 
 
--- Boolean operator and
+-- Boolean operator and 
 
 newtype AndBool = AndB { fromAndB :: Bool }
     deriving (Show)
