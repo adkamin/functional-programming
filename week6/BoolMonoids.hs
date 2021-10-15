@@ -70,7 +70,7 @@ newtype XORBool = XORB { fromXORB :: Bool }
     deriving (Show)
 
 instance Semigroup XORBool where
-    x <> y = XORB (fromXORB x == fromXORB y)   -- XOR returns true only when elements are equal
+    x <> y = XORB (fromXORB x /= fromXORB y)   -- XOR returns true iff elements are different
 
 instance Monoid XORBool where
     mempty = XORB False
@@ -78,14 +78,14 @@ instance Monoid XORBool where
 {-
 It is associative, see below:
 a b c | a XOR (b XOR c) = (a XOR b) XOR c
-T T T | T   XOR   T     =     T   XOR   T  =  T        
-T T F | T   XOR   F     =     T   XOR   F  =  F
-T F T | T   XOR   F     =     F   XOR   T  =  F
-F T T | F   XOR   T     =     F   XOR   T  =  F
-F F T | F   XOR   F     =     T   XOR   T  =  T
-F T F | F   XOR   F     =     F   XOR   F  =  T
-T F F | T   XOR   T     =     F   XOR   F  =  T
-F F F | F   XOR   T     =     T   XOR   F  =  F
+T T T | T   XOR   F     =     F   XOR   T  =  T      
+T T F | T   XOR   T     =     F   XOR   F  =  F
+T F T | T   XOR   T     =     T   XOR   T  =  F
+F T T | F   XOR   F     =     T   XOR   T  =  F
+F F T | F   XOR   T     =     F   XOR   T  =  T
+F T F | F   XOR   T     =     T   XOR   F  =  T
+T F F | T   XOR   F     =     T   XOR   F  =  T
+F F F | F   XOR   F     =     F   XOR   F  =  F
 
 It has an identity element, since any value XORed with False remains unchanged
 -}
