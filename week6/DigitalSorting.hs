@@ -35,9 +35,12 @@ instance Rankable Bool where
 -- To do this in one pass, we can use foldr with a helper function which appends the element to the relevant list based on its value
 
 --4
--- rank :: (Rankable key1, Rankable key2) ⇒ [((key1,key2),a)] → [[a]]
--- assoc :: ((k1,k2),a) → (k1,(k2,a))
+instance (Rankable key1, Rankable key2) => Rankable (key1, key2) where
+  --rank :: (Rankable key1, Rankable key2) => [((key1, key2), a)] -> [[a]]
+  rank = map (concat . rank) . rank . map assoc 
+    where assoc ((k1,k2),a) = (k1,(k2,a))
 
--- instance (Rankable key1, Rankable key2) => Rankable (key1,key2) where
---   rank ts = 
-
+--5
+instance Rankable (Maybe key) where
+  --rank :: (Rankable key) => [(Maybe key, a)] -> [[a]]
+  rank ms = [[v | (k,v) <- ms, isNothing k],[v | (k,v) <- ms, not (isNothing k)]]
