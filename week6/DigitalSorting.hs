@@ -4,6 +4,7 @@ import Data.List
 import Data.Bool
 import Data.Maybe
 import Data.Either
+import Data.Function
 
 class Rankable key where
   rank :: [(key,a)] -> [[a]]
@@ -14,7 +15,8 @@ digitalSortOn f = concat . rank . map (\x->(f x, x))
 digitalSort :: (Rankable key) => [key] -> [key]
 digitalSort = digitalSortOn id
 
---genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank :: (Ord key) => [(key,a)] -> [[a]]
+genericRank = map (map snd) . groupBy (on (==)fst) . sortOn fst
 
 --instance Rankable Int where ... etc.
 
