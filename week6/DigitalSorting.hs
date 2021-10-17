@@ -31,16 +31,21 @@ instance Rankable Char where
 
 --3
 instance Rankable Bool where
-  rank bs = [[v | (k,v) <- bs, k],[v | (k,v) <- bs, not k]]
--- To do this in one pass, we can use foldr with a helper function which appends the element to the relevant list based on its value
+  rank bs = [[v | (k,v) <- bs, not k],[v | (k,v) <- bs, k]]
 
 --4
 instance (Rankable key1, Rankable key2) => Rankable (key1, key2) where
-  --rank :: (Rankable key1, Rankable key2) => [((key1, key2), a)] -> [[a]]
   rank = map (concat . rank) . rank . map assoc 
     where assoc ((k1,k2),a) = (k1,(k2,a))
 
 --5
 instance Rankable (Maybe key) where
-  --rank :: (Rankable key) => [(Maybe key, a)] -> [[a]]
   rank ms = [[v | (k,v) <- ms, isNothing k],[v | (k,v) <- ms, not (isNothing k)]]
+
+--6
+instance Rankable [key] where
+  rank = rank . map (\(ks, v) -> (uncons ks, v))
+
+--7
+rankWithKey :: (Rankable key) => [(key,a)] -> [[(key,a)]]
+rankWithKey = rank . map (\(k,v) -> (k, (k,v)))

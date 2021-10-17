@@ -23,6 +23,7 @@ T && true = T
 F && true = F
 -}
 
+
 -- Boolean operator or
 
 newtype OrBool = OrB { fromOrB :: Bool }
