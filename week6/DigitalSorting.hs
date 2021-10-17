@@ -39,12 +39,12 @@ instance (Rankable key1, Rankable key2) => Rankable (key1, key2) where
     where assoc ((k1,k2),a) = (k1,(k2,a))
 
 --5
-instance Rankable (Maybe key) where
-  rank ms = [[v | (k,v) <- ms, isNothing k],[v | (k,v) <- ms, not (isNothing k)]]
+instance Rankable key => Rankable (Maybe key) where
+  rank ms = [v | (k,v) <- ms, isNothing k] : rank [((fromJust k),v) | (k,v) <- ms, not (isNothing k)]
 
 --6
-instance Rankable [key] where
-  rank = rank . map (\(ks, v) -> (uncons ks, v))
+instance Rankable key => Rankable [key] where 
+   rank = rank . map (\(ks, v) -> (uncons ks, v))
 
 --7
 rankWithKey :: (Rankable key) => [(key,a)] -> [[(key,a)]]
