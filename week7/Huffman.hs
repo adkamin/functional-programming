@@ -11,7 +11,7 @@ data Bit = O | I
 -----------------------------------------------------------------------
 
 frequencies :: (Ord a) => [a] -> [(a,Int)]
-frequencies = error "TODO: IMPLEMENT ME"
+frequencies  = map (\x -> (head x, length x)) . group . sort
 
 -----------------------------------------------------------------------
 
