@@ -24,7 +24,7 @@ sortFrequencies = sortOn snd
 combinePair :: [((Btree a),Int)] -> [((Btree a),Int)]
 combinePair [(a1,i1)]            = [(a1,i1)]
 combinePair ((a1,i1):(a2,i2):[]) = [((Bin a1 a2), i1 + i2)]
-combinePair ((a1,i1):(a2,i2):xs) = combinePair $ sortFrequencies $ ((Bin a1 a2), i1 + i2) : xs
+combinePair ((a1,i1):(a2,i2):xs) = combinePair (sortFrequencies (((Bin a1 a2), i1 + i2) : xs))
 
 huffman :: [(a,Int)] -> Btree a
 huffman = fst . head . combinePair . sortFrequencies . mapFrequencies
