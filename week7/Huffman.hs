@@ -15,8 +15,19 @@ frequencies  = map (\x -> (head x, length x)) . group . sort
 
 -----------------------------------------------------------------------
 
+mapFrequencies :: [(a,Int)] -> [((Btree a),Int)]
+mapFrequencies = map (\(a,i) -> ((Tip a), i))
+
+sortFrequencies :: [((Btree a),Int)] -> [((Btree a),Int)]
+sortFrequencies = sortOn snd
+
+combinePair :: [((Btree a),Int)] -> [((Btree a),Int)]
+combinePair [(a1,i1)]            = [(a1,i1)]
+combinePair ((a1,i1):(a2,i2):[]) = [((Bin a1 a2), i1 + i2)]
+combinePair ((a1,i1):(a2,i2):xs) = combinePair $ sortFrequencies $ ((Bin a1 a2), i1 + i2) : xs
+
 huffman :: [(a,Int)] -> Btree a
-huffman = error "TODO: IMPLEMENT ME"
+huffman = fst . head . combinePair . sortFrequencies . mapFrequencies
 
 -----------------------------------------------------------------------
 
@@ -27,6 +38,7 @@ huffman = error "TODO: IMPLEMENT ME"
 --decode :: (Ord a) => Btree a -> [Bit] -> [a]
 
 -----------------------------------------------------------------------
+
 
 backus1978 :: String
 backus1978 =
