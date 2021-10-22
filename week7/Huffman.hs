@@ -1,6 +1,8 @@
 module Huffman where
 
 import Data.List
+import Data.Function
+import qualified Data.Map as M
 
 data Btree a = Tip a | Bin (Btree a) (Btree a)
   deriving Eq -- Show is done manually
@@ -31,7 +33,18 @@ huffman = fst . head . combinePair . sortFrequencies . mapFrequencies
 
 -----------------------------------------------------------------------
 
---encode :: (Ord a) => Btree a -> [a] -> [Bit]
+-- I use findWithDefault instead of lookup to avoid using Maybe 
+-- It is okay to use this since I assume the key is always present in the dict
+encode :: (Ord a) => Btree a -> [a] -> [Bit]
+encode t s = concat $ map (\k -> M.findWithDefault [O] k dict) s 
+  where dict = codes t
+
+codes :: (Ord a) => Btree a -> M.Map a [Bit]
+codes (Tip a)   = M.singleton a []
+codes (Bin l r) = (M.map (\bits -> (O:bits)) pathsl) `M.union` (M.map (\bits -> (I:bits)) pathsr)
+  where
+    pathsl = codes l
+    pathsr = codes r
 
 -----------------------------------------------------------------------
 

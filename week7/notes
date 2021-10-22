@@ -1,0 +1,19 @@
+Bin (Bin (Bin (Tip 'r') (Tip 'w'))
+         (Bin (Tip 'e') (Tip 'h')))
+    (Bin (Tip 'l')
+         (Bin (Bin (Tip ' ') (Tip 'd'))
+              (Tip 'o')))
+
+codes :: Btree a -> [(a, [Bit])]
+codes (Tip a)     = [(a, [])]
+codes a@(Btree l r) = let pathsl = codes l
+                          pathsR = codes r
+                      in map (\(t,bits) -> (t, O:bits)) pathsl ++ map (\(t,bits) -> (t, I:bits)) pathsr
+
+codes :: Btree a -> [(a, [Bit])]
+codes (Tip a)   = M.fromList [(a, [])]
+codes (Bin l r) = M.fromList (sortBy (compare `on` (length . snd)) codelist)
+  where
+    codelist = (map (\(t,bits) -> (t, O:bits)) (M.toList pathsl) ++ map (\(t,bits) -> (t, I:bits)) (M.toList pathsr))
+    pathsl = codes l
+    pathsr = codes r
