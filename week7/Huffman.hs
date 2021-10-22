@@ -13,7 +13,7 @@ data Bit = O | I
 -----------------------------------------------------------------------
 
 frequencies :: (Ord a) => [a] -> [(a,Int)]
-frequencies  = map (\x -> (head x, length x)) . group . sort
+frequencies = map (\x -> (head x, length x)) . group . sort
 
 -----------------------------------------------------------------------
 
@@ -48,10 +48,17 @@ codes (Bin l r) = (M.map (\bits -> (O:bits)) pathsl) `M.union` (M.map (\bits -> 
 
 -----------------------------------------------------------------------
 
---decode :: (Ord a) => Btree a -> [Bit] -> [a]
+decode :: (Ord a) => Btree a -> [Bit] -> [a]
+decode _ []           = []
+decode (Bin l r) bits = decode' (Bin l r) (Bin l r) bits
 
+-- Allows to keep the original tree to keep decoding once we found the tip 
+decode' :: (Ord a) => Btree a -> Btree a -> [Bit] -> [a]
+decode' (Tip a) orig_tree bits       = a : decode orig_tree bits
+decode' (Bin l r) orig_tree (O:bits) = decode' l orig_tree bits
+decode' (Bin l r) orig_tree (I:bits) = decode' r orig_tree bits
+ 
 -----------------------------------------------------------------------
-
 
 backus1978 :: String
 backus1978 =
