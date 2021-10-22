@@ -33,10 +33,8 @@ huffman = fst . head . combinePair . sortFrequencies . mapFrequencies
 
 -----------------------------------------------------------------------
 
--- I use findWithDefault instead of lookup to avoid using Maybe 
--- It is okay to use this since I assume the key is always present in the dict
 encode :: (Ord a) => Btree a -> [a] -> [Bit]
-encode t s = concat $ map (\k -> M.findWithDefault [O] k dict) s 
+encode t s = concat $ map (\k -> dict M.! k) s -- ! is lookup without Maybe, it just returns error if key was not present
   where dict = codes t
 
 codes :: (Ord a) => Btree a -> M.Map a [Bit]
