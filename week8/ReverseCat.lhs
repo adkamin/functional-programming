@@ -42,6 +42,24 @@ Case 2: xs = (a:as). IH: reverseCat as bs = reverse as ++ bs, for all bs.
 
 -----------------------------------------------------
 To prove: reverse xs = reverse' xs
+By induction on xs.
 
-...
+Case 1: xs = []
 
+  reverse []
+= { definition of reverse }
+  []
+= { definition of reverseCat (ys = [])}
+  reverseCat [] []
+= { definition of reverse' }
+  reverse' []
+
+Case 2: xs = (a:as). IH not needed
+
+  reverse (a:as)
+= { definition of ++ }
+  reverse (a:as) ++ []
+= { from property reverseCat xs ys = reverse xs ++ ys }
+  reverseCat (a:as) []
+= { definition of reverse' }
+  reverse' (a:as)
