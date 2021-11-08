@@ -18,23 +18,27 @@ By induction on xs.
 
 Case 1: xs = []
 
-    reverseCat [] ys
-    ---------------- definition of reverseCat
-  = ys
-    --               definition of ++
-  = [] ++ ys         
-    --               definition of reverse
-  = reverse [] ++ ys
+  reverseCat [] ys
+= { definition of reverseCat }
+  ys
+= { definition of ++ } 
+  [] ++ ys
+= { definition of reverse }
+  reverse [] ++ ys
 
-Case 2: xs = (a:as)
-IH: reverseCat as bs = reverse as ++ bs, for all bs.
-
-    reverseCat (a:as) ys
-
-  = ...
-
-  = reverse (a:as) ++ ys
-
+Case 2: xs = (a:as). IH: reverseCat as bs = reverse as ++ bs, for all bs.
+  reverseCat (a:as) ys
+= { definition of reverseCat }
+  reverseCat as (a:ys)
+= { IH, bs = (a:ys) }  
+  reverse as ++ (a:ys)
+= { definition of ++ and right-associativity of ++ }
+  reverse as ++ a:(ys ++ [])
+= { definition of ++ }
+  reverse as ++ [a] ++ ys
+= { definition of reverse }
+  reverse (a:as) ++ ys
+  
 
 -----------------------------------------------------
 To prove: reverse xs = reverse' xs

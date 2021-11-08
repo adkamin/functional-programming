@@ -6,48 +6,50 @@ Local definitions:
 > []     ++ ys = ys
 > (x:xs) ++ ys = x : xs++ys
 
+1.1
+Monoid laws: 
+left-identity:  [] ++ xs = xs                            (follows directly from ++)
+right-identity: xs ++ [] = xs                            (needs induction)
+associativity:  xs ++ (ys ++ zs) = (xs ++ ys) ++ zs      (needs induction)
+
+
+2.2
 -----------------------------------------------------
 To prove: xs ++ [] = xs
 By induction on xs.
 
-Case 1: xs = []
+Base case: xs = []:
 
-    [] ++ []
-    -------- definition of (++)
-  = []
+  [] ++ []
+= { definition of ++ }
+  []
 
-Case 2: xs = (a:as)
-IH: as ++ [] = as
+Inductive case: xs = (a:as). IH: as ++ [] = as
 
-    (a:as) ++ []
-    ------------ definition of ++
-  = a : as++[]
-        ------ IH
-  = a : as
-
+  (a:as) ++ [] 
+= { definition of ++ }
+  a : (as ++ [])
+=  { IH }
+  a : as
 
 -----------------------------------------------------
 To prove: xs ++ (ys ++ zs) = (xs ++ ys) ++ zs
-By induction on xs
+By induction on xs.
 
-Case 1: xs = []
+Base case: xs = []:
 
-    [] ++ (ys ++ zs)
-    ---------------- definition of ++
-  = ys ++ zs
-    --               definition of ++
-  = ([] ++ ys) ++ zs
+  [] ++ (ys ++ zs)
+= { definition of ++ }
+  (ys ++ zs)
+= { definition of ++ }
+  ([] ++ ys) ++ zs
 
-Case 2: xs = (a:as)
-IH: as ++ (ys ++ zs) = (as ++ ys) ++ zs, for all ys and zs
-
-    (a:as) ++ (ys ++ zs)
-    --------------------  definition of ++
-  = a : (as ++ (ys ++ zs))
-  
-  = ...?
-
-  = (a:(as ++ ys)) ++ zs
-    --------------         definition of ++
-  = ((a:as) ++ ys) ++ zs
+Inductive case: xs = (a:as). IH: as ++ (ys ++ zs) = (as ++ ys) ++ zs
+  (a:as) ++ (ys ++ zs) 
+= { definition of ++ }
+  a : as ++ (ys ++ zy)
+= { IH }
+  a : (as ++ ys) ++ zs
+  { definition of ++ }
+  ((a:as) ++ ys) ++ zs
 
