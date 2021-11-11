@@ -1,18 +1,3 @@
-(.) :: (b → c) → (a → b) → a → c
-(f . g) x = f (g x)                  (0)
-
-(++) :: [a] → [a] → [a]              
-[] ++ ys = ys                        (1)
-(x:xs) ++ ys = x : (xs ++ ys)        (2)
-
-map :: (a → b) → [a] → [b]
-map f [] = []                        (3)
-map f (x:xs) = f x : map f xs        (4)
-
-concat :: [[a]] → [a]
-concat [] = []                       (5)
-concat (x:xs) = x ++ concat x        (6)
-
 -----------------------------------------------------
 To prove: map (f . g) xs = map f (map g xs)
 By induction on xs.
