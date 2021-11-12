@@ -37,31 +37,38 @@ IH2: inorderCat t2 xs = inorder t2 ++ xs
   inorder (Node x t1 t2) ++ xs
 = { definition of inorder }
   inorder t1 ++ [x] ++ inorder t2 ++ xs
-= { IH1 and IH2 }
-  inorderCat t1 [x] ++ inorderCat t2 xs
+= { definition of (++) }
+  inorder t1 ++ x : inorder t2 ++ xs
+= { IH2 }
+  inorder t1 ++ (x : inorderCat t2 xs)
+= { IH1 }
+  inorderCat t1 (x : inorderCat t2 xs)
+  
 
 Thus, we have the following definition:
 -}
 
 inorderCat :: Tree a -> [a] -> [a]
 inorderCat Leaf xs           = xs
-inorderCat (Node x t1 t2) xs = inorderCat t1 [x] ++ inorderCat t2 xs
+inorderCat (Node x t1 t2) xs = inorderCat t1 (x : inorderCat t2 xs)
 
 inorder' :: Tree a -> [a]
 inorder' t = inorderCat t []
 
 -- 8.7.2
 {-
-After testing the run time of both, it turns out that new inorder is actually not more efficient
+After testing the run time of both using the test function, it turns out that for
+depth 10000, inorder' took ~0.4s and inorder took ~3.7s meaning inorder' is actually
+more efficient.
 -}
 
-main :: IO ()
-main = do start <- getCurrentTime
-          print $ inorder' (skewed 1000)
+test :: IO ()
+test = do start <- getCurrentTime
+          print $ inorder' (skewed 10000)
           stop <- getCurrentTime
           print $ diffUTCTime stop start
           start1 <- getCurrentTime
-          print $ inorder (skewed 1000)
+          print $ inorder (skewed 10000)
           stop1 <- getCurrentTime
           print $ diffUTCTime stop1 start1
 
@@ -93,16 +100,32 @@ IH2: elemsCat t2 xs = elems t2 ++ xs
   elems (Node x t1 t2) ++ xs
 = { definition of elems }
   x : elems t1 ++ elems t2 ++ xs
-= { IH1 and IH2 }
-  x : elemsCat t1 [] ++ elemsCat t2 xs
+= { IH1 }
+  x : elemsCat t1 (elems t2 ++ xs)
+= { IH2 }
+  x : elemsCat t1 (elemsCat t2 xs)
 
 Thus, we have the following definition:
 -}
 
 elemsCat :: Tree a -> [a] -> [a]
 elemsCat Leaf xs           = xs
-elemsCat (Node x t1 t2) xs = x : elemsCat t1 [] ++ elemsCat t2 xs
+elemsCat (Node x t1 t2) xs = x : elemsCat t1 (elemsCat t2 xs)
 
 elems' :: Tree a -> [a]
 elems' t = elemsCat t []
 
+{-
+Again, elems' took ~0.4s while elems took ~3.9s, showing that the efficiency of elems' is better
+and the improvement is the same as in inorder'.
+-}
+
+test2 :: IO ()
+test2 = do start <- getCurrentTime
+           print $ elems' (skewed 10000)
+           stop <- getCurrentTime
+           print $ diffUTCTime stop start
+           start1 <- getCurrentTime
+           print $ elems (skewed 10000)
+           stop1 <- getCurrentTime
+           print $ diffUTCTime stop1 start1
