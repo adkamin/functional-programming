@@ -38,10 +38,10 @@ Case 2: t = Node x t1 t2
 IH1: leaves t1 = nodes t1 + 1
 IH2: leaves t2 = nodes t2 + 1
 
-  leaves (Node x (Tree t1) (Tree t2))
+  leaves (Node x t1 Tree t2)
 = { 2 }
   leaves t1 + leaves t2
 = { IH1 and IH2 }
   nodes t1 + 1 + nodes t2 + 1
 = { 4, right-to-left }
-  nodes (Node x (Tree t1) (Tree t2)) + 1
+  nodes (Node x t1 t2) + 1
