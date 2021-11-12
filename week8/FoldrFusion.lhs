@@ -32,11 +32,13 @@ Namely as follows:
 = foldr (g . f) e
 
 Since the "THEN" part of the fusion law can only be applied if the "IF" part is true,
-we need to show that ..  
+we need to show that f (g x y) = h x (f y) 
 
 Which is the case since:
+  
+  (foldr g e) ()
 
-  ...
+  
 
 --------------------------------------
 To prove:  map (f . g) = map f . map g
