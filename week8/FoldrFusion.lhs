@@ -36,9 +36,19 @@ we need to show that f (g x y) = h x (f y)
 
 Which is the case since:
   
-  (foldr g e) ()
-
-  
+  foldr g e ((\x xs -> f x : xs) a b) 
+= { applying property foldr f b xs = compose (map f xs) b . }
+  compose (map g ((\x xs -> f x : xs) a b) e)
+= { applying lambda }
+  compose (map g (f a : b) e)
+= { applying map }
+  compose (((g (f a)) : map g b) e) 
+= { applying compose }
+  (g (f a)) compose (map g b) e
+= { applying property foldr f b xs = compose (map f xs) b }
+  (g (f a)) (foldr g e) b
+= { definition of (.) }
+  (g . f) a (foldr g e) b  
 
 --------------------------------------
 To prove:  map (f . g) = map f . map g
