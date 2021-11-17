@@ -15,17 +15,23 @@ instance (Show a) => Show (Stream a) where
 from :: Integer -> Stream Integer
 from n = n :> from (n + 1)
 
---head :: Stream a -> a
+head :: Stream a -> a
+head (x:>xs) = x
 
---tail :: Stream a -> Stream a
+tail :: Stream a -> Stream a
+tail (x:>xs) = xs
 
---repeat :: a -> Stream a
+repeat :: a -> Stream a
+repeat x = x :> repeat x
 
---map :: (a -> b) -> (Stream a -> Stream b)
+map :: (a -> b) -> (Stream a -> Stream b)
+map f (x:>xs) = f x :> map f xs
 
---zipWith :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+zipWith :: (a -> b -> c) -> (Stream a -> Stream b -> Stream c)
+zipWith f (x:>xs) (y:>ys) = f x y :> zipWith f xs ys
 
---filter :: (a -> Bool) -> Stream a -> Stream a
+filter :: (a -> Bool) -> Stream a -> Stream a
+filter p (x:>xs) = if p x then x :> (filter p xs) else filter p xs
 
 --toList :: Stream a -> [a]
 
