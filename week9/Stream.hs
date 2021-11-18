@@ -52,13 +52,20 @@ primesList :: [Integer]
 primesList = sieve [2..]
   where sieve (p:xs) = p : sieve [ n | n <- xs, n `mod` p /= 0 ]
 
+-- primesList :: Stream Integer
+-- primesList = sieve from 2
+--   where sieve (p:>xs) = p :> sieve [ n | n <- xs, n `mod` p /= 0 ]
+
 primes :: Stream Integer
 primes = cycle primesList
 
 -- primetwins :: Stream (Integer,Integer)
--- primetwins = filter (\p1 p2 -> p1 + 2 = p2) ((x,y2) :> primes)
---   where (x:>xs)      = primes
---         (y1:>y2:>ys) = primes
+-- primetwins = filter (\(p1,p2) -> (p1 + 2 == p2)) ((x,y) :> primetwins)
+--   where (x:>xs) = primesFrom 2
+--         (y:>ys) = primesFrom 5 -- always one ahead
+
+primesFrom :: Integer -> Stream Integer
+primesFrom n = filter (\i -> i >= n) primes
 
 -- ?
 combine :: Stream a -> Stream a -> Stream a
