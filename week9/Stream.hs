@@ -33,9 +33,11 @@ zipWith f (x:>xs) (y:>ys) = f x y :> zipWith f xs ys
 filter :: (a -> Bool) -> Stream a -> Stream a
 filter p (x:>xs) = if p x then x :> (filter p xs) else filter p xs
 
---toList :: Stream a -> [a]
+toList :: Stream a -> [a]
+toList (x:>xs) = x : toList xs
 
---cycle :: [a] -> Stream a
+cycle :: [a] -> Stream a
+cycle (x:xs) = x :> cycle xs
 
 nat, fib :: Stream Integer
 nat = 0 :> zipWith (+) nat (repeat 1)
