@@ -43,6 +43,19 @@ nat, fib :: Stream Integer
 nat = 0 :> zipWith (+) nat (repeat 1)
 fib = 0 :> 1 :> zipWith (+) fib (tail fib)
 
---primetwins :: Stream (Integer,Integer)
+-- taken from assignment of week 5... is this allowed?
+primesList :: [Integer]
+primesList = sieve [2..]
+  where sieve (p:xs) = p : sieve [ n | n <- xs, n `mod` p /= 0 ]
 
---combine :: Stream a -> Stream a -> Stream a
+primes :: Stream Integer
+primes = cycle primesList
+
+-- primetwins :: Stream (Integer,Integer)
+-- primetwins = filter (\p1 p2 -> p1 + 2 = p2) ((x,y2) :> primes)
+--   where (x:>xs)      = primes
+--         (y1:>y2:>ys) = primes
+
+-- ?
+combine :: Stream a -> Stream a -> Stream a
+combine (x:>xs) (y:>ys) = x :> y :> combine xs ys
