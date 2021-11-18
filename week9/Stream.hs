@@ -37,7 +37,11 @@ toList :: Stream a -> [a]
 toList (x:>xs) = x : toList xs
 
 cycle :: [a] -> Stream a
-cycle (x:xs) = x :> cycle xs
+cycle xs = cycleList xs xs
+
+cycleList :: [a] -> [a] -> Stream a
+cycleList [] ys     = cycle ys
+cycleList (x:xs) ys = x :> cycleList xs ys
 
 nat, fib :: Stream Integer
 nat = 0 :> zipWith (+) nat (repeat 1)
