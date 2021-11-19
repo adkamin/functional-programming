@@ -37,36 +37,22 @@ toList :: Stream a -> [a]
 toList (x:>xs) = x : toList xs
 
 cycle :: [a] -> Stream a
-cycle xs = cycleList xs xs
-
-cycleList :: [a] -> [a] -> Stream a
-cycleList [] ys     = cycle ys
-cycleList (x:xs) ys = x :> cycleList xs ys
+cycle xs = foldr (:>) (cycle xs) xs
 
 nat, fib :: Stream Integer
 nat = 0 :> zipWith (+) nat (repeat 1)
 fib = 0 :> 1 :> zipWith (+) fib (tail fib)
 
--- taken from assignment of week 5... is this allowed?
-primesList :: [Integer]
-primesList = sieve [2..]
+primesList :: Stream Integer
+primesList = cycle (sieve [2..])
   where sieve (p:xs) = p : sieve [ n | n <- xs, n `mod` p /= 0 ]
 
--- primesList :: Stream Integer
--- primesList = sieve from 2
---   where sieve (p:>xs) = p :> sieve [ n | n <- xs, n `mod` p /= 0 ]
-
-primes :: Stream Integer
-primes = cycle primesList
-
--- primetwins :: Stream (Integer,Integer)
--- primetwins = filter (\(p1,p2) -> (p1 + 2 == p2)) ((x,y) :> primetwins)
---   where (x:>xs) = primesFrom 2
---         (y:>ys) = primesFrom 5 -- always one ahead
+primetwins :: Stream (Integer,Integer)
+primetwins = filter (\(p1,p2) -> (p1 + 2 == p2)) (zipWith (tuple) primes (tail primes))
+  where tuple x y = (x,y)
 
 primesFrom :: Integer -> Stream Integer
 primesFrom n = filter (\i -> i >= n) primes
 
--- ?
 combine :: Stream a -> Stream a -> Stream a
 combine (x:>xs) (y:>ys) = x :> y :> combine xs ys
