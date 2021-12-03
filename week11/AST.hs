@@ -1,7 +1,6 @@
 module AST where
 
--- this template uses infix constructors; feel free to use AST2.hs (which uses prefix ones) if you prefer
--- (if you really liked your own solution to Exercise 4.7, you can use that as well)
+import Result
 
 type Identifier = String
 
@@ -13,23 +12,27 @@ infixl 6 :-:
 infixl 7 :/:
 infixl 7 :*:
 
-eval :: (Fractional a, Eq a) => Expr -> [(Identifier,a)] -> Maybe a 
-eval (Lit k) _ = Just (fromInteger k) 
-eval (x :+: y) vars = case (eval x vars, eval y vars) of 
-                     (Just x', Just y') -> Just (x'+y')
-                     _ -> Nothing
-                       
-eval (x :-: y) vars = case (eval x vars, eval y vars) of 
-                     (Just x', Just y') -> Just (x'-y')
-                     _ -> Nothing
+-- eval :: (Fractional a, Eq a) => Expr -> [(Identifier,a)] -> Maybe a
+-- eval (Lit k) _       = pure (fromInteger k)
+-- eval (Var name) vars = lookup name vars
+-- eval (x :+: y)  vars = pure (+) <*> eval x vars <*> eval y vars
+-- eval (x :-: y)  vars = pure (-) <*> eval x vars <*> eval y vars
+-- eval (x :*: y)  vars = pure (*) <*> eval x vars <*> eval y vars
+-- eval (x :/: y)  vars = pure (/) <*> (eval x vars) <*> case (eval y vars) of 
+--                                                       Just 0 -> Nothing
+--                                                       z -> z
 
-eval (x :*: y) vars = case (eval x vars, eval y vars) of
-                     (Just x', Just y') -> Just (x'*y') 
-                     _ -> Nothing 
+eval :: (Fractional a, Eq a) => Expr -> [(Identifier,a)] -> Result a
+eval (Lit k) _       = Okay (fromInteger k)
+eval (Var name) vars = lookup' name vars
+eval (x :+: y)  vars = pure (+) <*> eval x vars <*> eval y vars
+eval (x :-: y)  vars = pure (-) <*> eval x vars <*> eval y vars
+eval (x :*: y)  vars = pure (*) <*> eval x vars <*> eval y vars
+eval (x :/: y)  vars = pure (/) <*> (eval x vars) <*> case (eval y vars) of 
+                                                      Okay 0 -> Error ["division by zero"]
+                                                      z -> z
 
-eval (x :/: y) vars = case (eval x vars, eval y vars) of 
-                     (Just  _, Just 0)  -> Nothing
-                     (Just x', Just y') -> Just (x'/y') 
-                     _ -> Nothing
-
-eval (Var name) vars = error "FIXME: variable support"
+lookup' :: Identifier -> [(Identifier,a)] -> Result a
+lookup' el []          = Error [("unknown variable: " ++ el)]
+lookup' el ((i,a):ias) = if el == i then Okay a else lookup' el ias
+                                                    

@@ -2,6 +2,8 @@ module FMapExpr where
 
 import Data.Char
 
+import Result
+
 -- increments each value in the list
 -- Functor: []
 -- type of fmap: (a -> b) -> [] a -> [] b
