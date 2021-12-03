@@ -23,7 +23,7 @@ infixl 7 :*:
 --                                                       z -> z
 
 eval :: (Fractional a, Eq a) => Expr -> [(Identifier,a)] -> Result a
-eval (Lit k) _       = Okay (fromInteger k)
+eval (Lit k) _       = pure (fromInteger k)
 eval (Var name) vars = lookup' name vars
 eval (x :+: y)  vars = pure (+) <*> eval x vars <*> eval y vars
 eval (x :-: y)  vars = pure (-) <*> eval x vars <*> eval y vars
