@@ -59,6 +59,7 @@ histogram = map (\x -> (head x, length x)) . group . sort . evalND
 evalR :: Expr -> RandomState Integer
 evalR e = evalM e (\i -> genRandInteger (1,i))
 
+
 ----------- 12.6.6 ----------
 observed :: (Fractional a) => Int -> Expr -> IO a
 observed n dice = do 
