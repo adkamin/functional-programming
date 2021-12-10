@@ -60,11 +60,11 @@ evalR :: Expr -> RandomState Integer
 evalR e = evalM e (\i -> genRandInteger (1,i))
 
 ----------- 12.6.6 ----------
--- observed :: (Fractional a) => Int -> Expr -> IO a
--- observed n dice = do 
---   throws <- throwMany n dice
---   let avg = (sum throws `div` length throws)
---   return avg
+observed :: (Fractional a) => Int -> Expr -> IO a
+observed n dice = do 
+  throws <- throwMany n dice
+  let average = avg throws
+  return average
 
 
 throwMany :: Int -> Expr -> IO [Integer]
