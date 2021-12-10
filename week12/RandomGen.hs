@@ -4,11 +4,19 @@ import Control.Monad
 import System.Random
 import RandomState
 
---genRandIntegerIO :: (Integer,Integer) -> IO Integer
+genRandIntegerIO :: (Integer,Integer) -> IO Integer
+genRandIntegerIO (a,b) = do
+  iost <- getStdGen
+  let (i,st) = randomR (a,b) iost
+  setStdGen st
+  return i
 
 genRandInteger :: (Integer,Integer) -> RandomState Integer
 genRandInteger (a,b) = do
-  error "TODO: implement me"
+  rst <- get
+  let (i,st) = randomR (a,b) rst
+  put st
+  return i
 
 roll_2d6 :: RandomState Integer
 roll_2d6 = do
@@ -16,11 +24,14 @@ roll_2d6 = do
   b <- genRandInteger (1,6)
   return (a+b)
 
---safeR :: RandomState a -> IO a
---safeR m = do
---  ...
+safeR :: RandomState a -> IO a
+safeR m = do
+  state <- getStdGen
+  let (x,state') = runState m state
+  setStdGen state'
+  return x
 
---these definitions can be used to test your function a bit more thoroughly
+-- these definitions can be used to test your function a bit more thoroughly
 randomN :: (Integer,Integer) -> Int -> StdGen -> [Integer]
 randomN (a,b) n g = result
   where (result, _) = runState (replicateM n (genRandInteger (a,b))) g
