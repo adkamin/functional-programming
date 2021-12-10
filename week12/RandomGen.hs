@@ -26,10 +26,10 @@ roll_2d6 = do
 
 safeR :: RandomState a -> IO a
 safeR m = do
-  state <- getStdGen
-  let (x,state') = runState m state
-  setStdGen state'
-  return x
+  iost <- getStdGen
+  let (a,st) = runState m iost
+  setStdGen st
+  return a
 
 -- these definitions can be used to test your function a bit more thoroughly
 randomN :: (Integer,Integer) -> Int -> StdGen -> [Integer]
