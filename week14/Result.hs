@@ -6,12 +6,16 @@ data Result a = Okay a | Error [String]
   deriving (Eq,Ord,Show)
 
 instance Functor Result where
-  fmap f (Okay x)  = Okay (f x)
-  fmap _ (Error m) = Error m
+  --fmap :: (a -> b) -> Result a -> Result b
+  fmap f (Error s) = Error s
+  fmap f (Okay a)  = Okay (f a)
 
 instance Applicative Result where
+  --pure :: a -> Result a
   pure = Okay
-  Okay f   <*> Okay x   = Okay (f x)
-  Error e1 <*> Error e2 = Error (e1 `union` e2)
-  Error e1 <*> _        = Error e1
-  _        <*> Error e2 = Error e2
+
+  --(<*>) :: f (a -> b) -> f a -> f b
+  (Error f) <*> (Error a) = Error (f ++ a)
+  (Error f) <*> _         = Error f
+  _         <*> (Error a) = Error a
+  (Okay f)  <*> (Okay a)  = Okay (f a)
