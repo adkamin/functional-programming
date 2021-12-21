@@ -25,18 +25,3 @@ intRecord = do
     list <- replicateM (fromInteger n) integer
     symbol "}"
     return list
-
--- replicateM :: (Monad m) => Int -> m a -> m [a]
--- replicateM 0 _  = return []
--- replicateM n mx = do
---     x  <- mx
---     xs <- replicateM (n-1) mx
---     return (x:xs)
-
--- parseN :: Int -> Parser a -> Parser [a]
--- parseN 0 [] = pure []
--- parseN 0 p  = Nothing 
--- parseN n p  = pure (:) <*> p <*> parseN (n-1) p <|> pure []
-
-    
-    -- symbol "{" *> (int `sepBy` space) <* symbol "}"
