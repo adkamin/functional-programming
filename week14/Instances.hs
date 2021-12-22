@@ -24,17 +24,17 @@ data Tree a = Leaf | Node a (Tree a) (Tree a)
 
 instance Foldable Tree where
   --foldMap :: (Monoid m) => (a -> m) -> Tree a -> m
-  foldMap f Leaf         = mempty
+  foldMap _ Leaf         = mempty
   foldMap f (Node n l r) = f n <> foldMap f l <> foldMap f r <> mempty
 
 instance Functor Tree where
   --fmap :: (a -> b) -> f a -> f b
-  fmap f Leaf         = Leaf
+  fmap _ Leaf         = Leaf
   fmap f (Node n l r) = Node (f n) (fmap f l) (fmap f r)
 
 instance Traversable Tree where
   --traverse :: (Applicative f) => (a -> f b) -> Tree a -> f (Tree b)
-  traverse f Leaf         = pure Leaf
+  traverse _ Leaf         = pure Leaf
   traverse f (Node n l r) = pure (Node) <*> f n <*> traverse f l <*> traverse f r
 
 assistants :: Tree String
